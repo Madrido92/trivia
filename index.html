@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Trivia Game | لعبة الأسئلة</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#0f172a;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
+button {
+  padding:12px 18px;
+  margin:6px;
+  font-size:16px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+.category { background:#2563eb; color:white; }
+.answer { background:#334155; color:white; display:block; width:60%; margin:8px auto; }
+.correct { background:#16a34a; }
+.wrong { background:#dc2626; }
+#langBtn { background:#f59e0b; color:black; }
+</style>
+</head>
+
+<body>
+
+<h1 id="title">🎯 Trivia Game</h1>
+<button id="langBtn" onclick="toggleLang()">عربي / English</button>
+
+<div id="categories"></div>
+<h2 id="question"></h2>
+<div id="answers"></div>
+
+<script>
+let lang = "en";
+
+const data = {
+ games: {
+  en:{ q:"Who developed God of War?", a:["Ubisoft","Santa Monica Studio","Rockstar","EA"], c:1 },
+  ar:{ q:"من الشركة المطورة للعبة God of War؟", a:["Ubisoft","Santa Monica Studio","Rockstar","EA"], c:1 }
+ },
+ movies: {
+  en:{ q:"Which movie has the line 'Why so serious?'",
+      a:["Joker","Batman Begins","The Dark Knight","Avengers"], c:2 },
+  ar:{ q:"من أي فيلم جملة «Why so serious»؟",
+      a:["Joker","Batman Begins","The Dark Knight","Avengers"], c:2 }
+ },
+ ucl: {
+  en:{ q:"Which club won the Champions League the most?",
+      a:["Barcelona","Bayern Munich","AC Milan","Real Madrid"], c:3 },
+  ar:{ q:"أي نادي فاز بدوري أبطال أوروبا أكثر؟",
+      a:["برشلونة","بايرن ميونخ","ميلان","ريال مدريد"], c:3 }
+ },
+ anime: {
+  en:{ q:"Who is the main character of Demon Slayer?",
+      a:["Zenitsu","Inosuke","Tanjiro","Rengoku"], c:2 },
+  ar:{ q:"من بطل Demon Slayer؟",
+      a:["زينيتسو","إينوسكي","تانجيرو","رينغوكو"], c:2 }
+ },
+ food: {
+  en:{ q:"Which is a famous burger restaurant in Kuwait?",
+      a:["Mais Alghanim","Slider Station","Freej Swaileh","Melenzane"], c:1 },
+  ar:{ q:"أي مطعم كويتي مشهور بالبرغر؟",
+      a:["ميز الغنيم","سلايدر ستيشن","فريج صويلح","ميلانزاني"], c:1 }
+ },
+ theater: {
+  en:{ q:"Who is famous for political satire plays in Kuwait?",
+      a:["Hasan Al-Ballam","Tareq Al-Ali","Dawood Hussain","Abdulaziz Al-Muslim"], c:1 },
+  ar:{ q:"من اشتهر بالمسرحيات السياسية الساخرة؟",
+      a:["حسن البلام","طارق العلي","داوود حسين","عبدالعزيز المسلم"], c:1 }
+ }
+};
+
+const labels = {
+ en:["🎮 Video Games","🎬 Movies","⚽ Champions League","⚔️ Anime","🍔 Restaurants","🎭 Mashrehyat"],
+ ar:["🎮 ألعاب فيديو","🎬 أفلام","⚽ دوري الأبطال","⚔️ أنمي","🍔 مطاعم الكويت","🎭 مسرحيات"]
+};
+
+const keys = Object.keys(data);
+
+function loadCategories(){
+ document.getElementById("categories").innerHTML="";
+ document.getElementById("question").innerText="";
+ document.getElementById("answers").innerHTML="";
+ keys.forEach((k,i)=>{
+  let b=document.createElement("button");
+  b.className="category";
+  b.innerText=labels[lang][i];
+  b.onclick=()=>loadQuestion(k);
+  document.getElementById("categories").appendChild(b);
+ });
+ document.getElementById("title").innerText =
+  lang==="en" ? "🎯 Trivia Game" : "🎯 لعبة الأسئلة";
+}
+
+function loadQuestion(cat){
+ const q=data[cat][lang];
+ document.getElementById("question").innerText=q.q;
+ const ansDiv=document.getElementById("answers");
+ ansDiv.innerHTML="";
+ q.a.forEach((ans,i)=>{
+  let b=document.createElement("button");
+  b.className="answer";
+  b.innerText=ans;
+  b.onclick=()=>{
+    b.classList.add(i===q.c?"correct":"wrong");
+  };
+  ansDiv.appendChild(b);
+ });
+}
+
+function toggleLang(){
+ lang = lang==="en"?"ar":"en";
+ loadCategories();
+}
+
+loadCategories();
+</script>
+
+</body>
+</html>
